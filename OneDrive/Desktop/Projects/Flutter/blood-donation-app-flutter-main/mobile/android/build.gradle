@@ -1,0 +1,39 @@
+buildscript {
+    ext.kotlin_version = '1.9.10' // Update Kotlin version
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        // Kotlin Gradle Plugin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        // Google Services Plugin
+        classpath 'com.google.gms:google-services:4.4.2'
+        // Android Gradle Plugin (Update to AGP 8.2.1 or later)
+        classpath 'com.android.tools.build:gradle:7.4.0'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// Define root project build directory
+rootProject.buildDir = '../build'
+
+subprojects {
+    // Set build directories for subprojects
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    // Ensure dependencies are resolved in ':app'
+    project.evaluationDependsOn(':app')
+}
+
+// Clean task for the entire project
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
